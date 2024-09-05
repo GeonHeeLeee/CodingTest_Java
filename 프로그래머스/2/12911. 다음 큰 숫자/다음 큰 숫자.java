@@ -5,7 +5,7 @@ class Solution {
         int biggerNum = n + 1;
         int oneCount = 0;
         while(true) {
-            oneCount = Integer.bitCount(biggerNum);
+            oneCount = Integer.bitCount(biggerNum); //bitCount는 정수를 2진수로 변환후 1의 개수를 세어준다.
             if(oneCount == oneLength) {
                 answer = biggerNum;
                 break;
