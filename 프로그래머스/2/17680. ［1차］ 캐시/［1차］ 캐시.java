@@ -10,19 +10,15 @@ class Solution {
         }
         for(String city : input) {
             if(!cache.contains(city)) {
-                if(cache.size() < cacheSize) {
-                    cache.addLast(city);
-                    answer += 5;
-                } else {
+                if(cache.size() >= cacheSize) {
                     cache.removeFirst();
-                    cache.addLast(city);
-                    answer += 5;
                 }
+                answer += 5;
             } else {
                 cache.remove(city);
-                cache.addLast(city);
                 answer += 1;
             }
+            cache.addLast(city);
         }
         return answer;
     }
