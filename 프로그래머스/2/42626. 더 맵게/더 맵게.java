@@ -8,10 +8,7 @@ class Solution {
         }
         while(minHeap.size() >= 2) {
             if(minHeap.peek() < K) {
-                int first = minHeap.poll();
-                int second = minHeap.poll();
-                int mix = first + second*2;
-                minHeap.add(mix);
+                minHeap.add(minHeap.poll() + minHeap.poll()*2);
                 answer ++;
             } else {
                 return answer;
