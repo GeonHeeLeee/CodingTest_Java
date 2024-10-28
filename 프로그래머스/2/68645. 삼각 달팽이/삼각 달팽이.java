@@ -2,7 +2,6 @@ import java.util.*;
 class Solution {
     public int[] solution(int n) {
         int[][] snail = new int[n][n];
-        List<Integer> answer = new ArrayList();
         int[][] dir = new int[][]{{1,0},{0,1},{-1,-1}};
         int y = 0;
         int x = 0;
@@ -20,15 +19,8 @@ class Solution {
             y += dir[(i+1)%3][0];
             x += dir[(i+1)%3][1];
         }
-        for(int i = 0; i < n; i ++) {
-            for(int j = 0; j < n; j ++) {
-                if(snail[i][j] != 0) {
-                    answer.add(snail[i][j]);
-                }
-            }
 
-        }
-        return answer.stream().mapToInt(i -> i).toArray();
+        return Arrays.stream(snail).flatMapToInt(Arrays::stream).filter(i -> i != 0).toArray();
     }
 }
  
