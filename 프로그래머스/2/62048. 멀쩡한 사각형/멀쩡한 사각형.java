@@ -1,7 +1,8 @@
+import java.math.BigInteger;
 class Solution {
     public long solution(int w, int h) {
         long answer = 0;
-        int gcd = gcd(Math.max(w, h), Math.min(w, h));
+        long gcd = BigInteger.valueOf(w).gcd(BigInteger.valueOf(h)).longValue();
         long similarityH = (long) h / gcd;
         long similarityW = (long) w / gcd;
         
@@ -12,15 +13,7 @@ class Solution {
         }
         return (long) h * w - (gcd * answer);
     }
-    public int gcd(int a, int b) {
-        while(b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-    
+
     public double function(int x, long w, long h) {
         if(x == 0) {
             return 0;
