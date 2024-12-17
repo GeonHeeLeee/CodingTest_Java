@@ -1,23 +1,30 @@
 import java.util.*;
 class Solution {
+    Map<Integer, Queue<Integer>> graph = new HashMap();
+    int answer = 0;
     public int solution(int n, int[][] computers) {
-        int answer = 0;
-        boolean[] visited = new boolean[n];
-        for(int i = 0; i < n; i ++) {
-            if(!visited[i]) {
-                dfs(n, computers, i, visited);
+        for(int row = 0; row < n; row ++) {
+            for(int col = 0; col < n; col ++) {
+                Queue<Integer> queue = graph.computeIfAbsent(row, key -> new LinkedList());
+                if(computers[row][col] == 1 && col != row) {
+                   queue.offer(col); 
+                }
+            }
+        }
+        graph.keySet().stream().filter(key -> graph.get(key).isEmpty())
+            .forEach(a -> answer ++);
+        for(int node = 0; node < n; node ++) {
+            if(!graph.get(node).isEmpty()) {
+                dfs(node);
                 answer ++;
             }
         }
         return answer;
     }
-    public void dfs(int n, int[][] computers, int current, boolean[] visited) {
-        visited[current] = true;
-        
-        for(int col = 0; col < n; col ++) {
-            if(computers[current][col] == 1 && !visited[col]) {
-                dfs(n, computers, col, visited);
-            }
+    public void dfs(int node) {
+        while(graph.containsKey(node) && !graph.get(node).isEmpty()) {
+            int next = graph.get(node).poll();
+            dfs(next);
         }
     }
 }
