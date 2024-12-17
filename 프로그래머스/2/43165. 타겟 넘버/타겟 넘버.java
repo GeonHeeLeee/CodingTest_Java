@@ -1,24 +1,18 @@
-import java.util.*;
 class Solution {
+    int answer = 0;
     public int solution(int[] numbers, int target) {
-        int answer = 0;
-        Queue<int[]> queue = new LinkedList();
-        queue.add(new int[]{0,0});
-        
-        while(!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int sum = current[0];
-            int index = current[1];
-            
-            if(index == numbers.length) {
-                if(sum == target) {
-                    answer ++;
-                }
-            } else {
-                queue.add(new int[]{sum + numbers[index], index + 1});
-                queue.add(new int[]{sum - numbers[index], index + 1});
-            }
-        }
+        dfs(target, numbers, 0, 0);
         return answer;
+    }
+    public void dfs(int target, int[] numbers, int index, int sum) {
+        if(index == numbers.length) {
+            if(target == sum) {
+                answer ++;
+            }
+            return;
+        }
+        
+        dfs(target, numbers, index + 1, sum + numbers[index]); 
+        dfs(target, numbers, index + 1, sum - numbers[index]); 
     }
 }
