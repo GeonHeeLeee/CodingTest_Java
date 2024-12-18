@@ -1,39 +1,32 @@
 import java.util.*;
-
 class Solution {
     public int solution(int[][] maps) {
-        int[][] direction = new int[][]{{0,1},{1,0},{-1,0},{0,-1}};
-        return bfs(maps, direction);
-    }
-    public int bfs(int[][] maps, int[][] direction) {
-        int n = maps.length;
-        int m = maps[0].length;
-        
-        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        int answer = 0;
         Queue<int[]> queue = new LinkedList();
-        
-        queue.add(new int[]{0,0,1});
+        int[][] dir = new int[][]{{-1,0},{0,-1},{1,0},{0,1}};
+        boolean[][] visited = new boolean[maps.length][maps[0].length];
+        queue.offer(new int[]{0,0,1});
         visited[0][0] = true;
         
         while(!queue.isEmpty()) {
-            int[] current = queue.poll();
-            int row = current[0];
-            int col = current[1];
-            int step = current[2];
+            int[] location = queue.poll();
+            int y = location[0];
+            int x = location[1];
+            int count = location[2];
             
-            for(int[] dir : direction) {
-                int nRow = dir[0] + row;
-                int nCol = dir[1] + col;
+            for(int idx = 0; idx < dir.length; idx ++) {
+                int dy = y + dir[idx][0];
+                int dx = x + dir[idx][1];
                 
-                if(nRow == m-1 && nCol ==n-1) {
-                    return step + 1;
+                if(dy >= 0 && dx >= 0 && dy < maps.length && dx < maps[0].length && !visited[dy][dx] && maps[dy][dx] == 1) {
+                    queue.offer(new int[]{dy, dx, count + 1});
+                    visited[dy][dx] = true;
                 }
-                if(nRow >= 0 && nCol >= 0 && nRow < m && nCol < n && !visited[nCol][nRow] && maps[nCol][nRow] == 1) {
-                    queue.add(new int[]{nRow, nCol, step + 1});
-                    visited[nCol][nRow] = true;
+                if(dy == maps.length - 1 && dx == maps[0].length - 1) {
+                    return count + 1;
                 }
             }
         }
-        return - 1;
+        return -1;
     }
 }
