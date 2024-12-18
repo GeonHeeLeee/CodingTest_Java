@@ -1,51 +1,50 @@
 import java.util.*;
-class Word {
-    String word;
-    int count;
-    
-    public Word(String word, int count) {
-        this.word = word;
-        this.count = count;
-    }
-}
 class Solution {
-    public int solution(String begin, String target, String[] words) {
-        int answer = 0;
-        Queue<Word> queue = new LinkedList();
-        boolean[] visited = new boolean[words.length];
-        int minCount = Integer.MAX_VALUE;
+    class Word {
+        String word;
+        int count;
         
-        queue.add(new Word(begin, 0));
+        public Word(String word, int count) {
+            this.word = word;
+            this.count = count;
+        }
+        
+        public boolean isSimilar(String word2) {
+            int count = 0;
+            for(int idx = 0; idx < word2.length(); idx++) {
+                if(this.word.charAt(idx) != word2.charAt(idx)) {
+                    count ++;
+                    if(count > 1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    public int solution(String begin, String target, String[] words) {
+        boolean[] visited = new boolean[words.length];
+        Queue<Word> queue = new LinkedList();
+        Word beginWord = new Word(begin, 0);
+        queue.offer(beginWord);
         
         while(!queue.isEmpty()) {
-            Word node = queue.poll();
-            String word = node.word;
-            int count = node.count;
-            if(word.equals(target)) {
-                minCount = Math.min(minCount, count);
-            }
-            for(int i = 0; i < words.length; i ++) {
-                if(isSimilar(words[i], word) && !visited[i]) {
-                    queue.add(new Word(words[i], count + 1));
-                    visited[i] = true;
+            Word curWord = queue.poll();
+            String word = curWord.word;
+            int count = curWord.count;
+            
+            for(int idx = 0; idx < words.length; idx ++) {
+                String nextWord = words[idx];
+                if(curWord.isSimilar(nextWord) && !visited[idx]) {
+                    if(nextWord.equals(target)) {
+                        return count + 1;
+                    }
+                    queue.offer(new Word(nextWord, count + 1));
+                    visited[idx] = true;
                 }
             }
         }
-        return minCount == Integer.MAX_VALUE ? 0 : minCount;
+        return 0;
     }
-    
-    public boolean isSimilar(String s1, String s2) {
-        char[] char1 = s1.toCharArray();
-        char[] char2 = s2.toCharArray();
-        int diffCount = 0;
-        for(int i = 0; i < char1.length; i ++) {
-            if(char1[i] != char2[i]) {
-                diffCount ++;
-                if(diffCount > 1) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+
 }
