@@ -1,19 +1,14 @@
 class Solution {
     public int[] solution(int brown, int yellow) {
-        int[] answer = {};
-        int tiles = brown + yellow;
-        int h;
-        int w;
-        for(int i = 2; i < (int) Math.sqrt(tiles) + 1; i ++) {
-            if(tiles % i == 0) {
-                h = i;
-                w = tiles/i;
-                if(2 * w + 2 * (h-2) == brown) {
-                    answer = new int[]{w, h};
-                    break;
-                }
+        int height = 0;
+        int width = 0;
+        for(int h = 2; h < 2000000; h ++) {
+            if((h-2)*(brown - 2* h) == 2 * yellow) {
+                width = (brown + 4 - 2 * h)/ 2;
+                height = h;
+                break;
             }
         }
-        return answer;
+        return new int[]{width, height};
     }
 }
