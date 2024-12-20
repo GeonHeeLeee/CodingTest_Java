@@ -1,21 +1,20 @@
+import java.util.*;
 class Solution {
+    int answer = 0;
     public int solution(int k, int[][] dungeons) {
-        boolean[] visited = new boolean[dungeons.length];
-        return backTrack(dungeons, visited, 0, k);
+        dfs(dungeons, k, 0, new boolean[dungeons.length]);
+        return answer;
     }
-    public int backTrack(int[][] dungeons, boolean[] visited, int count, int fatigue) {
-        int maxCount = count;
-        
-        for(int i = 0; i < dungeons.length; i ++) {
-            int minHealth = dungeons[i][0];
-            int needHealth = dungeons[i][1];
-            
-            if(!visited[i] && fatigue >= minHealth) {
-                visited[i] = true;
-                maxCount = Math.max(maxCount, backTrack(dungeons, visited, count + 1, fatigue - needHealth));
-                visited[i] = false;
+    public void dfs(int[][] dungeons, int k, int count, boolean[] visited) {
+        answer = Math.max(answer, count);
+        for(int idx = 0; idx < dungeons.length; idx ++)  {
+            int minFatigue = dungeons[idx][0];
+            int requiredFatigue = dungeons[idx][1];
+            if(!visited[idx] && k >= minFatigue) {
+                visited[idx] = true;
+                dfs(dungeons, k - requiredFatigue, count + 1, visited);
+                visited[idx] = false;
             }
         }
-        return maxCount;
     }
 }
