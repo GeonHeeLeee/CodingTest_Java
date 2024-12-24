@@ -1,38 +1,27 @@
 import java.util.*;
 class Solution {
     public int[] solution(String[] operations) {
-        TreeSet<Integer> queue = new TreeSet();
-        List<Integer> dupList = new ArrayList();
+        PriorityQueue<Integer> maxpq = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> minpq = new PriorityQueue<>();
+        
         for(String operation : operations) {
             String command = operation.split(" ")[0];
             int number = Integer.parseInt(operation.split(" ")[1]);
+            
             if(command.equals("I")) {
-                if(queue.contains(number)) {
-                    dupList.add(number);
-                } else {
-                    queue.add(number);
-                }
-            } else if(command.equals("D") && !queue.isEmpty()) {
-                if(number == -1) {
-                    if(dupList.contains(queue.first())) {
-                        dupList.remove(queue.first());
-                    } else if(!queue.isEmpty()) {
-                        queue.remove(queue.first());
-                    }
-                } else {
-                    if(dupList.contains(queue.last())) {
-                        dupList.remove(queue.last());
-                    } else if(!queue.isEmpty()) {
-                        queue.remove(queue.last());
-                    }
-                }
+                maxpq.offer(number);
+                minpq.offer(number);
+            } else if(!maxpq.isEmpty() && operation.equals("D 1")) {
+                minpq.remove(maxpq.poll());
+            } else if(!minpq.isEmpty() && operation.equals("D -1")) {
+                maxpq.remove(minpq.poll());
             }
         }
-        if(!queue.isEmpty()) {
-            return new int[]{queue.last(), queue.first()};
+        if(minpq.isEmpty() && maxpq.isEmpty()) {
+            return new int[]{0,0};
         } else {
-            return new int[]{0, 0};
+            return new int[]{maxpq.poll(), minpq.poll()};
         }
-        
+
     }
 }
