@@ -1,42 +1,38 @@
 import java.util.*;
 class Solution {
     public int[] solution(String[] operations) {
-        TreeSet<Integer> treeSet = new TreeSet();
-        List<Integer> duplList = new ArrayList();
-        for(int i = 0; i < operations.length; i ++) {
-            String[] splitStr = operations[i].split(" ");
-            String command = splitStr[0];
-            int num = Integer.parseInt(splitStr[1]);
-
+        TreeSet<Integer> queue = new TreeSet();
+        List<Integer> dupList = new ArrayList();
+        for(String operation : operations) {
+            String command = operation.split(" ")[0];
+            int number = Integer.parseInt(operation.split(" ")[1]);
             if(command.equals("I")) {
-                if(treeSet.contains(num)) {
-                    duplList.add(num);
+                if(queue.contains(number)) {
+                    dupList.add(number);
                 } else {
-                    treeSet.add(num);
+                    queue.add(number);
                 }
-            } else {
-                if(!treeSet.isEmpty()) {
-                    int value;
-                    if(num == 1) {
-                        value = treeSet.last();
-                        treeSet.remove(value);
-                    } else {
-                        value = treeSet.first();
-                        treeSet.remove(value);
+            } else if(command.equals("D") && !queue.isEmpty()) {
+                if(number == -1) {
+                    if(dupList.contains(queue.first())) {
+                        dupList.remove(queue.first());
+                    } else if(!queue.isEmpty()) {
+                        queue.remove(queue.first());
                     }
-                    if(duplList.contains(value)) {
-                        treeSet.add(value);
+                } else {
+                    if(dupList.contains(queue.last())) {
+                        dupList.remove(queue.last());
+                    } else if(!queue.isEmpty()) {
+                        queue.remove(queue.last());
                     }
                 }
             }
         }
-        if(treeSet.isEmpty()) {
-            return new int[]{0, 0};
+        if(!queue.isEmpty()) {
+            return new int[]{queue.last(), queue.first()};
         } else {
-            int max = treeSet.last();
-            int min = treeSet.first();
-            return new int[]{max, min};
+            return new int[]{0, 0};
         }
-
+        
     }
 }
