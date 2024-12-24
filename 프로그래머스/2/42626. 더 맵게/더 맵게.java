@@ -2,22 +2,23 @@ import java.util.*;
 class Solution {
     public int solution(int[] scoville, int K) {
         int answer = 0;
-        PriorityQueue<Integer> minHeap = new PriorityQueue();
-        for(int i : scoville) {
-            minHeap.add(i);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for(int food : scoville) {
+            pq.offer(food);
         }
-        while(minHeap.size() >= 2) {
-            if(minHeap.peek() < K) {
-                minHeap.add(minHeap.poll() + minHeap.poll()*2);
-                answer ++;
-            } else {
+        
+        while(pq.size() >= 2) {
+            int leastSpicy = pq.poll();
+            if(leastSpicy >= K) {
                 return answer;
             }
+            int secondSpicy = pq.poll();
+            pq.offer(leastSpicy + secondSpicy * 2);
+            answer ++;
         }
-        if(minHeap.peek() >= K) {
+        if(!pq.isEmpty() && pq.peek() >= K) {
             return answer;
-        } else {
-            return -1;
         }
+        return -1;
     }
 }
