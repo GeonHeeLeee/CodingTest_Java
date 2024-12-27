@@ -31,7 +31,7 @@ class Solution {
                 cost[currentIndex] = count;
             }
             if(!graph.containsKey(currentIndex)) {
-                continue;
+                break;
             }
 
             for(int nextIndex : graph.get(currentIndex)) {
