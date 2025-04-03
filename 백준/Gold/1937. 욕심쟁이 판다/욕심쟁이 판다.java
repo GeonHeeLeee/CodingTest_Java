@@ -5,7 +5,7 @@ class Main {
     static int n;
     static int[][] bamboos;
     static int[][] directions = new int[][] { { 0, 1 }, { 1, 0 }, { -1, 0 }, { 0, -1 } };
-
+    static int[][] dp;
     static int maxDist = 0;
 
     public static void main(String[] args) throws IOException {
@@ -13,34 +13,43 @@ class Main {
 
         n = Integer.parseInt(br.readLine());
         bamboos = new int[n][n];
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        dp = new int[n][n];
+
         for (int r = 0; r < n; r++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int c = 0; c < n; c++) {
                 bamboos[r][c] = Integer.parseInt(st.nextToken());
-                pq.offer(new int[] { r, c, bamboos[r][c] });
+                dp[r][c] = -1;
             }
         }
 
-        int[][] dp = new int[n][n];
-
-        while (!pq.isEmpty()) {
-            int[] current = pq.poll();
-            int r = current[0];
-            int c = current[1];
-
-            for (int[] dir : directions) {
-                int dr = r + dir[0];
-                int dc = c + dir[1];
-
-                if (isInRange(dr, dc) && bamboos[dr][dc] < bamboos[r][c]) {
-                    dp[r][c] = Math.max(dp[r][c], dp[dr][dc] + 1);
-                }
+        for (int r = 0; r < n; r++) {
+            for (int c = 0; c < n; c++) {
+                maxDist = Math.max(maxDist, dfs(r, c));
             }
-            maxDist = Math.max(dp[r][c], maxDist);
         }
 
-        System.out.println(maxDist + 1);
+        System.out.println(maxDist);
+
+    }
+
+    public static int dfs(int row, int col) {
+        if (dp[row][col] != -1) {
+            return dp[row][col];
+        }
+
+        dp[row][col] = 1;
+
+        for (int[] dir : directions) {
+            int nextRow = dir[0] + row;
+            int nextCol = dir[1] + col;
+
+            if (isInRange(nextRow, nextCol) && bamboos[nextRow][nextCol] < bamboos[row][col]) {
+                dp[row][col] = Math.max(dp[row][col], dfs(nextRow, nextCol) + 1);
+            }
+        }
+
+        return dp[row][col];
     }
 
     public static boolean isInRange(int row, int col) {
