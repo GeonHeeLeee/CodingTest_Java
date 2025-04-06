@@ -1,30 +1,39 @@
-import java.util.*;
 import java.io.*;
-public class Main {
+import java.util.*;
+
+class Main {
     static int[] height;
-    static int[] answer;
+    static boolean found = false;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        height = new int[9];
-        answer = new int[9];
-        for(int idx = 0; idx < 9; idx ++) {
-            height[idx] = Integer.parseInt(br.readLine());
-        }
-        dfs(0, 0, 0);
 
-    }
-    public static void dfs(int sum, int index, int count) {
-        if(sum == 100 && count == 7) {
-            Arrays.sort(answer);
-            Arrays.stream(answer).filter(h -> h != 0).forEach(height -> System.out.println(height));
-            System.exit(0);
+        height = new int[9];
+
+        for (int i = 0; i < 9; i++) {
+            height[i] = Integer.parseInt(br.readLine());
         }
-        if(sum > 100 || index >= 9) {
+        dfs(0, new ArrayList<>(), 0);
+    }
+
+    public static void dfs(int index, List<Integer> dwarfs, int sum) {
+        if (dwarfs.size() == 7 && sum == 100) {
+            Collections.sort(dwarfs);
+            for (int h : dwarfs) {
+                System.out.println(h);
+            }
+            found = true;
             return;
         }
-        answer[index] = height[index];
-        dfs(sum + height[index], index + 1, count + 1);
-        answer[index] = 0;
-        dfs(sum, index + 1, count);
+
+        if (sum > 100 || index >= 9 || found) {
+            return;
+        }
+
+        for (int i = index; i < 9; i++) {
+            dwarfs.add(height[i]);
+            dfs(i + 1, dwarfs, sum + height[i]);
+            dwarfs.remove(dwarfs.size() - 1);
+        }
     }
 }
