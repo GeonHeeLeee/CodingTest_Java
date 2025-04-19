@@ -1,22 +1,22 @@
-import java.util.*;
 class Solution {
     public long solution(int n, int[] times) {
-        long answer = 0;
-        long left = 1;
-        long right = (long) times[times.length-1] * n;
-        Arrays.sort(times);
+        long answer = Long.MAX_VALUE;
+        long maxTime = 0;
+        for(int time : times) {
+            maxTime = Math.max(maxTime, time);
+        }
+        
+        long left = 0;
+        long right = maxTime * n;
+        
         while(left <= right) {
-            long people = 0;
             long mid = (left + right) / 2;
-            
-            for(long time : times) {
-                people += mid / time;
-                if(people >= n) {
-                    break;
-                }
+            long count = 0;
+            for(int time : times) {
+                count += (mid / time);
             }
             
-            if(people >= n) {
+            if(count >= n) {
                 answer = mid;
                 right = mid - 1;
             } else {
