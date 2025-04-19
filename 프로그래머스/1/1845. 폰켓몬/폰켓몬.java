@@ -1,8 +1,19 @@
 import java.util.*;
-import java.util.stream.*;
+import java.io.*;
 class Solution {
     public int solution(int[] nums) {
-        Set<Integer> distinctNums = Arrays.stream(nums).boxed().collect(Collectors.toSet());
-        return Math.min(nums.length / 2, distinctNums.size());
+        int answer = 0;
+        Map<Integer, Integer> pokemonMap = new HashMap();
+        for(int num : nums) {
+            pokemonMap.put(num, pokemonMap.getOrDefault(num, 0) + 1);
+        }
+        
+        int n = nums.length / 2;
+        int pokemonCount = pokemonMap.keySet().size();
+        if(n < pokemonCount) {
+            return n;
+        } else {
+            return pokemonCount;
+        }
     }
 }
