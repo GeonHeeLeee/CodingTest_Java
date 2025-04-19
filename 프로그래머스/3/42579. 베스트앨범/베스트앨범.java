@@ -1,51 +1,64 @@
 import java.util.*;
-class Solution {
-    public int[] solution(String[] genres, int[] plays) {
-        List<Integer> answer = new ArrayList();
-        Map<String, Integer> playSum = new HashMap();
-        List<Music> musicList = new ArrayList();
-
-        for(int i = 0; i < plays.length; i++) {
-            playSum.put(genres[i], playSum.getOrDefault(genres[i], 0) + plays[i]);
-            musicList.add(new Music(genres[i], plays[i], i));
-        }
-        
-        Collections.sort(musicList, (a, b) -> Integer.compare(b.play, a.play));
-        List<Map.Entry<String, Integer>> genreList = new ArrayList(playSum.entrySet());
-        Collections.sort(genreList, (a, b) -> Integer.compare(b.getValue(), a.getValue()));
-        
-        
-        for(int i = 0; i < genreList.size(); i ++) {
-            String genre = genreList.get(i).getKey();
-            int count = 0;
-            
-            for(Music music : musicList) {
-                if(music.genre.equals(genre) && !music.visited) {
-                    answer.add(music.index);
-                    count ++;
-                    music.visited = true;
-                }
-                if(count >= 2) {
-                    count = 0;
-                    break;
-                }
-            }
-        }
-        
-        return answer.stream().mapToInt(i -> i).toArray();
+import java.util.stream.*;
+class Song {
+    int index;
+    int play;
+    
+    public Song(int index, int play) {
+        this.index = index;
+        this.play = play;
     }
 }
 
-class Music {
-    public String genre;
-    public int play;
-    public int index;
-    public boolean visited;
+class Genre {
+    String name;
+    int plays;
     
-    public Music(String genre, int play, int index) {
-        this.genre = genre;
-        this.play = play;
-        this.index = index;
-        this.visited = false;
-    } 
+    public Genre(String name, int plays) {
+        this.name = name;
+        this.plays = plays;
+    }
+}
+
+class Solution {
+    public int[] solution(String[] genres, int[] plays) {
+        List<Integer> answer = new ArrayList<>();
+        Map<String, Integer> genreMap = new HashMap();
+        Map<String, List<Song>> songMap = new HashMap();
+        
+        for(int i = 0; i < genres.length; i ++) {
+            genreMap.put(genres[i], genreMap.getOrDefault(genres[i], 0) + plays[i]);
+            Song song = new Song(i, plays[i]);
+            if(!songMap.containsKey(genres[i])) {
+                songMap.put(genres[i], new ArrayList<>());
+            }
+            songMap.get(genres[i]).add(song);
+        }
+        
+        List<Genre> genreList = new ArrayList<>();
+        for(String genre : genreMap.keySet()) {
+            genreList.add(new Genre(genre, genreMap.get(genre)));
+        }
+        
+        Collections.sort(genreList, (a,b) -> Integer.compare(b.plays, a.plays));
+        
+        for(Genre genre : genreList) {
+            List<Song> songList = songMap.get(genre.name);
+            Collections.sort(songList, (a,b) -> {
+                int result = Integer.compare(b.play, a.play);
+                if(result != 0) {
+                    return result;
+                }
+                return Integer.compare(a.index, b.index);
+            });
+            if(songList.size() > 1) {
+                answer.add(songList.get(0).index);
+                answer.add(songList.get(1).index);
+            } else {
+                answer.add(songList.get(0).index);
+            }
+        }
+        
+        return answer.stream().mapToInt(Integer::intValue).toArray();
+    }
 }
