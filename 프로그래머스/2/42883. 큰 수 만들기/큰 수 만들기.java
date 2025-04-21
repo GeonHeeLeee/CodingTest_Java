@@ -6,19 +6,12 @@ class Solution {
         Stack<Character> stack = new Stack<>();
         
         for(int i = 0; i < input.length; i ++) {
-            if(stack.isEmpty()) {
-                stack.add(input[i]);
-            } else {
-                if(stack.peek() > input[i]) {
-                    stack.add(input[i]);
-                } else {
-                    while(!stack.isEmpty() && stack.peek() < input[i] && removed < k) {
-                        stack.pop();
-                        removed ++;
-                    }
-                    stack.add(input[i]);
-                }
+            char current = input[i];
+            while(!stack.isEmpty() && stack.peek() < current && removed < k) {
+                stack.pop();
+                removed ++;
             }
+            stack.add(current);
         }
         
         int remain = (k - removed);
