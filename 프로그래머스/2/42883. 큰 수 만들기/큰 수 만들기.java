@@ -1,26 +1,32 @@
+import java.util.*;
 class Solution {
     public String solution(String number, int k) {
-        String answer = "";
-        int count = 0;
-        int index = 0;
-        StringBuilder sb = new StringBuilder(number);
-        while(count < k && index < sb.length() - 1) {
-            if(sb.charAt(index) < sb.charAt(index+1)) {
-                sb.deleteCharAt(index);
-                count ++;
-                if(index > 0) {
-                    index --;
-                }
+        int removed = 0;
+        char[] input = number.toCharArray();
+        Stack<Character> stack = new Stack<>();
+        
+        for(int i = 0; i < input.length; i ++) {
+            if(stack.isEmpty()) {
+                stack.add(input[i]);
             } else {
-                index ++;
+                if(stack.peek() > input[i]) {
+                    stack.add(input[i]);
+                } else {
+                    while(!stack.isEmpty() && stack.peek() < input[i] && removed < k) {
+                        stack.pop();
+                        removed ++;
+                    }
+                    stack.add(input[i]);
+                }
             }
         }
         
-        while(count < k) {
-            sb.deleteCharAt(sb.length() - 1);
-            count ++;
+        int remain = (k - removed);
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) {
+            sb.append(stack.pop());
         }
         
-        return sb.toString();
+        return sb.reverse().substring(0, sb.length() - remain).toString();
     }
 }
