@@ -1,19 +1,21 @@
-import java.util.*;
 class Solution {
-    int answer = 0;
+    int answer = Integer.MIN_VALUE;
     public int solution(int k, int[][] dungeons) {
-        dfs(dungeons, k, 0, new boolean[dungeons.length]);
+        exploreDungeons(k, dungeons, new boolean[dungeons.length], 0);
         return answer;
     }
-    public void dfs(int[][] dungeons, int k, int count, boolean[] visited) {
+    
+    public void exploreDungeons(int curK, int[][] dungeons, boolean[] visited, int count) {
         answer = Math.max(answer, count);
-        for(int idx = 0; idx < dungeons.length; idx ++)  {
-            int minFatigue = dungeons[idx][0];
-            int requiredFatigue = dungeons[idx][1];
-            if(!visited[idx] && k >= minFatigue) {
-                visited[idx] = true;
-                dfs(dungeons, k - requiredFatigue, count + 1, visited);
-                visited[idx] = false;
+        
+        for(int i = 0; i < dungeons.length; i ++) {
+            int required = dungeons[i][0];
+            int used = dungeons[i][1];
+            
+            if(!visited[i] && required <= curK) {
+                visited[i] = true;
+                exploreDungeons(curK - used, dungeons, visited, count + 1);
+                visited[i] = false;
             }
         }
     }
