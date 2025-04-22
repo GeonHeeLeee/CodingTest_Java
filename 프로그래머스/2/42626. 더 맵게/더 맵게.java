@@ -7,18 +7,20 @@ class Solution {
             pq.offer(food);
         }
         
-        while(pq.size() >= 2) {
-            int leastSpicy = pq.poll();
-            if(leastSpicy >= K) {
-                return answer;
+        boolean isMade = false;
+        while(pq.size() > 1) {
+            if(pq.peek() >= K) {
+                isMade = true;
+                break;
             }
-            int secondSpicy = pq.poll();
-            pq.offer(leastSpicy + secondSpicy * 2);
+            pq.offer(pq.poll() + pq.poll() * 2);
             answer ++;
         }
+        
         if(!pq.isEmpty() && pq.peek() >= K) {
-            return answer;
+            isMade = true;
         }
-        return -1;
+        
+        return isMade ? answer : -1;
     }
 }
