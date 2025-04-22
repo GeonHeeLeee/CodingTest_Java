@@ -10,10 +10,9 @@ class Solution {
                 idx ++;
             } else {
                 answer ++;
-                position += w * 2 + 1;
+                position += 2 * w + 1;
             }
         }
-
         return answer;
     }
 }
