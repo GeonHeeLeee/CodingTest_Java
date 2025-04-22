@@ -1,29 +1,26 @@
+import java.util.*;
 class Solution {
-    static int answer = 0;
-    static String alpha = "AEIOU";
-    static int cnt = 0;
-    static String[] dict = alpha.split("");
+    Set<String> tempDictionary = new HashSet<>();
     public int solution(String word) {
-        StringBuilder sb = new StringBuilder();
-        dfs(word, 0, sb);
-        return answer;
+        int answer = 0;
+        char[] vowels = new char[]{'A', 'E', 'I', 'O','U'};
+        makeWords(vowels, new StringBuilder());
+        List<String> dictionary = new ArrayList<>(tempDictionary);
+        Collections.sort(dictionary);
+        return dictionary.indexOf(word) + 1;
+        
     }
-    public void dfs(String target, int count, StringBuilder sb) {
-        if(sb.toString().equals(target)) {
-            answer = cnt;
+    
+    public void makeWords(char[] letters, StringBuilder sb) {
+        if(sb.length() == 5) {
             return;
         }
-        if(count == 5) {
-            return;
-        }
-        for(int i = 0; i < dict.length; i ++) {
-            sb.append(dict[i]);
-            cnt ++;
-            dfs(target, count + 1, sb);
+        
+        for(int i = 0; i < letters.length; i ++) {
+            sb.append(letters[i]);
+            tempDictionary.add(sb.toString());
+            makeWords(letters, sb);
             sb.deleteCharAt(sb.length() - 1);
-            if(answer > 0) {
-                return;
-            }
         }
     }
 }
