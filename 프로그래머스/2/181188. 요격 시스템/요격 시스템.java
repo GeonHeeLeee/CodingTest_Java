@@ -2,13 +2,19 @@ import java.util.*;
 class Solution {
     public int solution(int[][] targets) {
         int answer = 0;
-        Arrays.sort(targets, (a, b) -> a[1] - b[1]);
-        int index = 0;
-        for(int i = 0; i < targets.length; i ++) {
-            if(targets[i][0] >= index) {
-                answer ++;
-                index = targets[i][1];
+        Arrays.sort(targets, (a,b) -> Integer.compare(b[1], a[1]));
+
+        int curStart = Integer.MAX_VALUE;
+        for(int[] target : targets) {
+            int end = target[1];
+
+            if(curStart < end) {
+                curStart = Math.max(curStart, target[0]);
+                continue;
             }
+            
+            answer ++;
+            curStart = target[0];
         }
         return answer;
     }
