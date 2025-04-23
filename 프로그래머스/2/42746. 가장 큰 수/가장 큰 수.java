@@ -1,20 +1,20 @@
 import java.util.*;
-
 class Solution {
     public String solution(int[] numbers) {
-        List<String> numList = new ArrayList();
-        for(int i : numbers) {
-            numList.add(Integer.toString(i));
+        String answer = "";
+        StringBuilder sb = new StringBuilder();
+        PriorityQueue<String> pq = new PriorityQueue<>((a,b) -> (b+a).compareTo(a+b));
+        
+        for(int number : numbers) {
+            pq.offer(String.valueOf(number));
         }
-        numList.sort((a,b) -> (b+a).compareTo(a+b));
-        if(numList.get(0).equals("0")) {
+        
+        if(pq.peek().equals("0")) {
             return "0";
         }
-        StringBuilder answer = new StringBuilder();
-        for (String i : numList) {
-            answer.append(i);
+        while(!pq.isEmpty()) {
+            sb.append(pq.poll());
         }
-
-        return answer.toString();
+        return sb.toString();
     }
 }
