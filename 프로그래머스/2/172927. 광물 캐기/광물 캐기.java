@@ -1,69 +1,64 @@
 import java.util.*;
 class Solution {
+    int tired = 0;
     public int solution(int[] picks, String[] minerals) {
         int answer = 0;
-        int pickSum = 0;
-        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a,b) -> Integer.compare(b[0], a[0]));
+        int pickCount = 0;
+        int mineralCount = minerals.length;
+        
         for(int pick : picks) {
-            pickSum += pick * 5;
+            pickCount += pick;
         }
-        int length = (int) Math.min(minerals.length, pickSum);
-        int weightSum = 0;
-        for(int i = 0; i < length; i ++) {
-            int weight = 0;
-            switch(minerals[i]) {
-                case "diamond":
-                    weight = 25;
-                    break;
-                case "iron":
-                    weight = 5;
-                    break;
-                case "stone":
-                    weight = 1;
-                    break;
+        
+        pickCount *= 5;
+        
+        List<int[]> tireds = new ArrayList<>();
+        
+        int max = pickCount <= mineralCount ? pickCount : mineralCount;
+        for(int i = 0; i < max; i += 5) {
+            int stoneSum = 0;
+            int ironSum = 0;
+            int diaSum = 0;
+            for(int j = i; j < (int) Math.min(i + 5, max); j ++) {
+                stoneSum += stoneMineral(minerals[j]);
+                ironSum += ironMineral(minerals[j]);
+                diaSum += diaMineral(minerals[j]);
             }
-            weightSum += weight;
-            if((i+1) % 5 == 0 || i == length-1) {
-                pq.add(new int[]{weightSum, i/5});
-                weightSum = 0;
+            tireds.add(new int[]{diaSum, ironSum, stoneSum});
+        }
+        
+        Collections.sort(tireds, (a,b) -> b[2] - a[2]);
+
+        for(int[] current : tireds) {
+            for(int i = 0; i < 3; i ++) {
+                if(picks[i] > 0) {
+                    answer += current[i];
+                    picks[i] --;
+                    break;
+                }
             }
         }
         
-        while(!pq.isEmpty()) {
-            int[] node = pq.poll();
-            int value = node[0];
-            int index = node[1];
-            int pickIdx = 0;
-            for(int j = 0; j < 3; j ++) {
-                if(picks[j] != 0) {
-                    pickIdx = j;
-                    picks[j] --;
-                    break;
-                }
-            }
-            for(int i = index * 5; i < index * 5 + 5; i ++) {
-                if(i == minerals.length) {
-                    break;
-                }
-                if(pickIdx == 0) {
-                    answer ++;
-                } else if(pickIdx == 1) {
-                    if(minerals[i].equals("diamond")) {
-                        answer += 5;
-                    } else {
-                        answer ++;
-                    }
-                } else {
-                    if(minerals[i].equals("diamond")) {
-                        answer += 25;
-                    } else if(minerals[i].equals("iron")) {
-                        answer += 5;
-                    } else {
-                        answer ++;
-                    }
-                }
-            }
-        }
         return answer;
+    }
+    
+    public int diaMineral(String mineral) {
+        return 1;
+    }
+    
+    public int ironMineral(String mineral) {
+        if(mineral.equals("diamond")) {
+            return 5;
+        }
+        return 1;
+    }
+    
+    public int stoneMineral(String mineral) {
+        if(mineral.equals("diamond")) {
+            return 25;
+        } else if(mineral.equals("iron")) {
+            return 5;
+        }
+        return 1;
     }
 }
