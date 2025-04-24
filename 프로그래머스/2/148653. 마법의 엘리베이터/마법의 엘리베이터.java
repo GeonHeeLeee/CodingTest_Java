@@ -1,32 +1,28 @@
-import java.util.*;
 class Solution {
     public int solution(int storey) {
         int answer = 0;
-        StringBuilder sb = new StringBuilder(Integer.toString(storey));
+        StringBuilder sb = new StringBuilder(String.valueOf(storey));
+        
         for(int i = sb.length() - 1; i >= 0; i --) {
-            int num = sb.charAt(i) - '0';
+            int current = sb.charAt(i) - '0';
             if(i == 0) {
-                if(num > 5) {
-                    answer += (10 - num);
-                    answer ++;
-                } else {
-                    answer += num;
-                }
+                answer += Math.min(10 - current + 1, current);
                 break;
             }
-            if(num > 5) {
-                answer += (10 - num);
-                sb.setCharAt(i-1, (char)(sb.charAt(i-1) + 1)); 
-            } else if(num == 5) {
-                if(sb.charAt(i-1) >= '5') {
-                    answer += (10 - num);
-                    sb.setCharAt(i-1, (char)(sb.charAt(i-1) + 1)); 
+            int before = sb.charAt(i - 1) -'0';
+            
+            if(current > 5) {
+                answer += (10 - current);
+                sb.setCharAt(i - 1,  (char) (before + 1 +'0'));
+            } else if(current == 5) {
+                if(before >= 5) {
+                    answer += (10 - current);
+                    sb.setCharAt(i - 1, (char) (before + 1 +'0'));
                 } else {
-                    System.out.println(true);
-                    answer += num;
+                    answer += current;
                 }
             } else {
-                answer += num;
+                answer += current;
             }
         }
         return answer;
