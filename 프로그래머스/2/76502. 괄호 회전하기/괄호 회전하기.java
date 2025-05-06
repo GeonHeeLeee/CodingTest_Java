@@ -19,6 +19,7 @@ class Solution {
                 }
             }
             
+            
             if(stack.length() == 0) {
                 answer ++;
             }
