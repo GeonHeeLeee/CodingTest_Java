@@ -14,6 +14,7 @@ class Solution {
             right --;
             answer ++;
         }
+        
         return answer;
     }
 }
