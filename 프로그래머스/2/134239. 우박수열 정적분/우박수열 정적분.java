@@ -17,6 +17,7 @@ class Solution {
                 double y2 = hailList.get(x+1);
                 integral += ((y1 + y2) / 2);
             }
+            
             answer[i] = integral;
         }
         return answer;
