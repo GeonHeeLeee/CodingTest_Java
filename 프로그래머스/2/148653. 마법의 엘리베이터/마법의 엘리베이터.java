@@ -1,29 +1,19 @@
 class Solution {
     public int solution(int storey) {
         int answer = 0;
-        StringBuilder sb = new StringBuilder(String.valueOf(storey));
         
-        for(int i = sb.length() - 1; i >= 0; i --) {
-            int current = sb.charAt(i) - '0';
-            if(i == 0) {
-                answer += Math.min(10 - current + 1, current);
-                break;
-            }
-            int before = sb.charAt(i - 1) -'0';
+        while(storey > 0) {
+            int digit = storey % 10;
+            int next = (storey / 10) % 10;
             
-            if(current > 5) {
-                answer += (10 - current);
-                sb.setCharAt(i - 1,  (char) (before + 1 +'0'));
-            } else if(current == 5) {
-                if(before >= 5) {
-                    answer += (10 - current);
-                    sb.setCharAt(i - 1, (char) (before + 1 +'0'));
-                } else {
-                    answer += current;
-                }
+            if(digit > 5 || (digit == 5 && next >= 5)) {
+                answer += (10 - digit);
+                storey += 10;
             } else {
-                answer += current;
+                answer += digit;
             }
+            storey /= 10;
+            
         }
         return answer;
     }
