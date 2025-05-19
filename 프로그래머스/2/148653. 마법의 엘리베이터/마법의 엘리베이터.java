@@ -14,6 +14,7 @@ class Solution {
             }
             storey /= 10;
             
+            
         }
         return answer;
     }
