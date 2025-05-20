@@ -15,6 +15,7 @@ class Solution {
                 String[] musicInfoArray = musicinfos[j].split(",");
                 musicInfoArray[3] = musicInfoArray[3].replaceAll(notes[i], noteMap.get(notes[i]).toString());
                 musicinfos[j] = String.join(",", musicInfoArray);
+                
                 m = m.replaceAll(notes[i], noteMap.get(notes[i]).toString());
             }
         }
