@@ -19,7 +19,6 @@ class Solution {
                 answer.append(firstString + afterString + " ");  
             }
         }
-        
 
         
         return answer.toString().substring(0, answer.length() - 1);
