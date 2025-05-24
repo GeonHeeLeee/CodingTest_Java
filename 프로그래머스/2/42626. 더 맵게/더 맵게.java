@@ -12,6 +12,7 @@ class Solution {
             if(pq.peek() >= K) {
                 isMade = true;
                 break;
+                
             }
             pq.offer(pq.poll() + pq.poll() * 2);
             answer ++;
