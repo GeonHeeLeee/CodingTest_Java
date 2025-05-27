@@ -10,6 +10,7 @@ class Solution {
             } else {
                 stack.push(input[i]);
             }
+            
         }
         return stack.isEmpty();
     }
