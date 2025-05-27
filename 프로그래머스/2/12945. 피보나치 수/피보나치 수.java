@@ -11,6 +11,7 @@ class Solution {
             count ++;
         }
         if(n == 2) {
+            
             return 1;
         }
         return fn;
