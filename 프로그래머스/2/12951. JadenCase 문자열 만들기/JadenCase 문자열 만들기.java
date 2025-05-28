@@ -12,6 +12,7 @@ class Solution {
             if(!firstString.matches("[0-9]")) {
                 firstString = firstString.toUpperCase();
             }
+            
             if(subString.length() == 1) {
                 answer.append(firstString + " ");
             } else {
@@ -19,6 +20,7 @@ class Solution {
                 answer.append(firstString + afterString + " ");  
             }
         }
+        
 
         
         return answer.toString().substring(0, answer.length() - 1);
