@@ -9,6 +9,8 @@ class Solution {
         char beforeLetter = words[0].charAt(words[0].length() - 1);
         
         
+        
+        
         for(int i = 1; i < words.length; i ++) {
             personNum = (i % n) + 1;
             char firstLetter = words[i].charAt(0);
