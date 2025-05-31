@@ -16,6 +16,7 @@ class Solution {
             Node node = new Node(i);
             nodeMap.put(i, node);
             
+            
         }
         
         for(int[] wire : wires) {
