@@ -13,6 +13,7 @@ class Solution {
                         flag = true;
                         break;
                     }
+                    
                 }
                 if(flag) {
                     break;
