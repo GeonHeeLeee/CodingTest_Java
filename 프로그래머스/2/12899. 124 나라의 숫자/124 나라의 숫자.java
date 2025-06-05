@@ -13,6 +13,7 @@ class Solution {
                 answer.append("2");
                 n = n / 3;
             }
+            
            
         }
         return answer.reverse().toString();
