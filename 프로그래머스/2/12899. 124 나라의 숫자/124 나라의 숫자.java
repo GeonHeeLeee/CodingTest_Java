@@ -14,7 +14,6 @@ class Solution {
                 n = n / 3;
             }
             
-           
         }
         return answer.reverse().toString();
     }
